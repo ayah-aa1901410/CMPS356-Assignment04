@@ -14,6 +14,7 @@ import TextField from '@mui/material/TextField';
 import SaveIcon from '@mui/icons-material/Save';
 import { Stack } from "@mui/system";
 import axios from 'axios'
+import {useStore} from "../../store/store.js"
 
 
 export default function IdeasPage() {
@@ -22,27 +23,28 @@ export default function IdeasPage() {
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [ideas, setIdeas] = useState([])
+  const store = useStore()
 
   useEffect(()=>{
-    if(localStorage.getItem("user")){
-      const id = localStorage.getItem("user")
+    if(store.user != ""){
+      const id = store.user
       let response = ""
-      function validate(){
-        return axios.post("/api/identifier", id).then(res => res.data)
+      async function validate(){
+        return await fetch("/api/identifier", {method: "POST", body: id}).then(res => res.json())
       }
-      const validateUser = () => {
-        const res = validate();
+      const validateUser = async () => {
+        const res = await validate();
         response = res
       };
       validateUser();
       if(response != -1){
-        setUserID(localStorage.getItem("user"))
+        setUserID(store.user)
 
       }else{
         async function fetchData(){
           const id = await fetch("/api/identifier", {method: "GET"}).then(res => res.json())
           console.log(id);
-          localStorage.setItem("user", id)
+          store.setUser(id)
           setUserID(id);
         }
         fetchData();
@@ -52,7 +54,7 @@ export default function IdeasPage() {
       async function fetchData(){
         const id = await fetch("/api/identifier", {method: "GET"}).then(res => res.json())
         console.log(id);
-        localStorage.setItem("user", id)
+        store.setUser(id)
         setUserID(id);
       }
       fetchData();
