@@ -28,9 +28,8 @@ export default function IdeasPage() {
       const id = localStorage.getItem("user")
       let response = ""
       async function validate(){
-        return axios.post("/api/identifier", id )
+        return await fetch("/api/identifier", {method: "POST", body: id}).then(res => res.json())
       }
-      // {method: "POST", body: id}
       const validateUser = async () => {
         const res = await validate();
         response = res
@@ -42,8 +41,8 @@ export default function IdeasPage() {
       }else{
         function fetchData(){
           const id = axios.get("/api/identifier").then(res => {
-            setUserID(res)
-            localStorage.setItem("user", res)
+            setUserID(res.data)
+            localStorage.setItem("user", res.data)
           })
           console.log(id);
           // localStorage.setItem("user", id)
@@ -56,8 +55,8 @@ export default function IdeasPage() {
     }else{
       function fetchData(){
         const id = axios.get("/api/identifier").then(res => {
-          setUserID(res)
-          localStorage.setItem("user", res)
+          setUserID(res.data)
+          localStorage.setItem("user", res.data)
         })
         console.log(id);
         // localStorage.setItem("user", id)
