@@ -41,6 +41,7 @@ export default function IdeasPage() {
       }else{
         async function fetchData(){
           const id = await fetch("/api/identifier", {method: "GET"}).then(res => res.json())
+          console.log(id);
           localStorage.setItem("user", id)
           setUserID(id);
         }
@@ -50,6 +51,7 @@ export default function IdeasPage() {
     }else{
       async function fetchData(){
         const id = await fetch("/api/identifier", {method: "GET"}).then(res => res.json())
+        console.log(id);
         localStorage.setItem("user", id)
         setUserID(id);
       }
