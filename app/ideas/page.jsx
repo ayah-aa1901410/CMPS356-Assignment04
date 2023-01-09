@@ -51,15 +51,12 @@ export default function IdeasPage() {
 
       }
     }else{
-      async function fetchData(){
-        return await fetch("/api/identifier", {method: "GET"}).then(res => res.json())
-      }
-      const getUser = async () => {
-        const id = await fetchData();
+      function fetchData(){
+        const id = axios.get("/api/identifier")
         localStorage.setItem("user", id)
         setUserID(id);
-      };
-      getUser();
+      }
+      fetchData();
 
     }
   },[])
