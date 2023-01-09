@@ -40,10 +40,13 @@ export default function IdeasPage() {
 
       }else{
         function fetchData(){
-          const id = axios.get("/api/identifier").then(res => res.json())
+          const id = axios.get("/api/identifier").then(res => {
+            setUserID(res.json())
+            localStorage.setItem("user", res.json())
+          })
           console.log(id);
-          localStorage.setItem("user", id)
-          setUserID(id);
+          // localStorage.setItem("user", id)
+          // setUserID(id);
         }
         fetchData();
 // .then(res => res.json())
@@ -51,10 +54,13 @@ export default function IdeasPage() {
       }
     }else{
       function fetchData(){
-        const id = axios.get("/api/identifier").then(res => res.json())
+        const id = axios.get("/api/identifier").then(res => {
+          setUserID(res.json())
+          localStorage.setItem("user", res.json())
+        })
         console.log(id);
-        localStorage.setItem("user", id)
-        setUserID(id);
+        // localStorage.setItem("user", id)
+        // setUserID(id);
       }
       fetchData();
     }
