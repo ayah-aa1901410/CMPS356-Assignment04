@@ -28,8 +28,9 @@ export default function IdeasPage() {
       const id = localStorage.getItem("user")
       let response = ""
       async function validate(){
-        return await fetch("/api/identifier", {method: "POST", body: id}).then(res => res.json())
+        return axios.post("/api/identifier", id ).then(res => res.json())
       }
+      // {method: "POST", body: id}
       const validateUser = async () => {
         const res = await validate();
         response = res
