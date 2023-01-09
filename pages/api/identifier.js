@@ -20,7 +20,7 @@ export default async function handler(req, res) {
             console.log(`File is written successfully!`)
           }
         })
-      res.status(200).json(id)
+      res.status(200).json(JSON.parse(id))
     }else if(req.method === "POST"){
 
       const file = await fs.promises.readFile("tmp/users.json");
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
       const userIndex = userList.findIndex(user => user == userID)
 
       if(userIndex != -1){
-        res.status(200).json(userIndex)
+        res.status(200).json(JSON.parse(userIndex))
       }else{
         res.status(500).json("User Not Found")
       }
