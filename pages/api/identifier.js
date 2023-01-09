@@ -23,7 +23,7 @@ export default async function handler(req, res) {
           }
         })
       console.log("returning the id" + id);
-      res.status(200).json(JSON.stringify(id))
+      res.status(200).json(id)
     }else if(req.method === "POST"){
       console.log("inside verifying");
       const file = await fs.promises.readFile("tmp/users.json");
