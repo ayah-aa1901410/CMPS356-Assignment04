@@ -40,7 +40,7 @@ export default function IdeasPage() {
 
       }else{
         function fetchData(){
-          const id = axios.get("/api/identifier")
+          const id = axios.get("/api/identifier").then(res => res.json())
           localStorage.setItem("user", id)
           setUserID(id);
         }
@@ -49,7 +49,7 @@ export default function IdeasPage() {
       }
     }else{
       function fetchData(){
-        const id = axios.get("/api/identifier")
+        const id = axios.get("/api/identifier").then(res => res.json())
         localStorage.setItem("user", id)
         setUserID(id);
       }
