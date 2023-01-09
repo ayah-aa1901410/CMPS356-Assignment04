@@ -5,16 +5,14 @@ import fs from "fs"
 export default async function handler(req, res) {
     if(req.method === "GET"){
       const randomID = uuidv4()
-      console.log("inside Identifier");
       const id = randomID.replaceAll("-", "")
 
       const file = await fs.promises.readFile("tmp/users.json");
   
       const userList = JSON.parse(file)
-      console.log("got the id: " + id);
+
       userList.push(id)
   
-      console.log("pushed the id to the list: " + userList);
       await fs.promises.writeFile("tmp/users.json", JSON.stringify(userList),'utf8', err => {
           if (err) {  
             console.log(`Error writing file: ${err}`)
@@ -22,10 +20,9 @@ export default async function handler(req, res) {
             console.log(`File is written successfully!`)
           }
         })
-      console.log("returning the id" + id);
       res.status(200).json(id)
     }else if(req.method === "POST"){
-      console.log("inside verifying");
+
       const file = await fs.promises.readFile("tmp/users.json");
   
       const userList = JSON.parse(file)

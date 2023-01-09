@@ -39,8 +39,9 @@ export default function IdeasPage() {
         setUserID(localStorage.getItem("user"))
 
       }else{
-        function fetchData(){
-          const id = axios.get("/api/identifier").then(res => res.json())
+        async function fetchData(){
+          const id = await fetch("/api/identifier", {method: "GET"})
+          console.log(id);
           localStorage.setItem("user", id)
           setUserID(id);
         }
@@ -48,8 +49,9 @@ export default function IdeasPage() {
 
       }
     }else{
-      function fetchData(){
-        const id = axios.get("/api/identifier").then(res => res.json())
+      async function fetchData(){
+        const id = await fetch("/api/identifier", {method: "GET"})
+        console.log(id);
         localStorage.setItem("user", id)
         setUserID(id);
       }
