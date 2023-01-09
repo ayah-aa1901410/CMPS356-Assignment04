@@ -39,18 +39,19 @@ export default function IdeasPage() {
         setUserID(localStorage.getItem("user"))
 
       }else{
-        async function fetchData(){
-          const id = await fetch("/api/identifier", {method: "GET"}).then(res => res.json())
+        function fetchData(){
+          const id = ("/api/identifier")
           console.log(id);
           localStorage.setItem("user", id)
           setUserID(id);
         }
         fetchData();
-
+// .then(res => res.json())
+// , {method: "GET"}
       }
     }else{
-      async function fetchData(){
-        const id = await fetch("/api/identifier", {method: "GET"}).then(res => res.json())
+      function fetchData(){
+        const id = axios.get("/api/identifier")
         console.log(id);
         localStorage.setItem("user", id)
         setUserID(id);
