@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "../page.module.css";
 import { useEffect, useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, QueryClient } from "@tanstack/react-query";
 import { Button, Card, CardActions, CardContent, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { IconButton } from "@mui/material";
@@ -63,7 +63,7 @@ export default function IdeasPage() {
 
   const query = useQuery(
     ["ideas", userID],
-    async () => await fetch(`/api/${userID}/ideas`, {method: "GET"}).then(res => res.json()),
+    async () => await fetch(`/api/${store.user}/ideas`, {method: "GET"}).then(res => res.json())
   );
 
   useEffect(() => {
@@ -72,6 +72,9 @@ export default function IdeasPage() {
     }
     console.log(query.data);
   }, [query.isSuccess]);
+
+
+  const queryClient = useQueryClient()
 
   async function saveNewIdea(){
     const date = new Date()
@@ -86,7 +89,6 @@ export default function IdeasPage() {
     var cHour = date.getHours();
     var cMin = date.getMinutes();
     var cSec = date.getSeconds();
-    console.log(monthNames[cMonth] + " " +cDate  + "," +cYear + " " +cHour+ ":" + cMin+ ":" +cSec);
     const newIdea = {
       title: title,
       description: description,
@@ -94,20 +96,30 @@ export default function IdeasPage() {
     }
     const user = userID
     const res = await fetch(`/api/${user}/ideas`, {method: "POST", body: JSON.stringify(newIdea)})
-    const list = await fetch(`/api/${userID}/ideas`, {method: "GET"}).then(res => res.json())
-    setIdeas(list)
+    // const list = await fetch(`/api/${userID}/ideas`, {method: "GET"}).then(res => res.json())
+    // setIdeas(list)
   }
 
   async function deleteIdea(ideaId){
     const ideaID = ideaId
     const user = userID
     const res = await fetch(`/api/${user}/ideas`, {method: "DELETE", body: ideaID})
-    const list = await fetch(`/api/${userID}/ideas`, {method: "GET"}).then(res => res.json())
-    setIdeas(list)
+    // const list = await fetch(`/api/${userID}/ideas`, {method: "GET"}).then(res => res.json())
+    // setIdeas(list)
   }
 
-  const saveMutation = useMutation(saveNewIdea)
-  const deleteMutation = useMutation(deleteIdea)
+  const saveMutation = useMutation(saveNewIdea,
+    {
+      onSuccess: () => {
+        queryClient.removeQueries('ideas')
+      }
+    })
+  const deleteMutation = useMutation(deleteIdea, 
+    {
+      onSuccess: () => {
+        queryClient.removeQueries('ideas')
+      }
+    })
 
   function titleChanged(event){
     setTitle(event.target.value)
